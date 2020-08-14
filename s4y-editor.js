@@ -56,6 +56,9 @@ var s4yEditor = (function () {
 
     // Show current caret position
     function showCaretPosition() {
+        if (document.compForm.switchMode.checked === true) {
+            return;
+        }
         var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
         var w3 = (typeof window.getSelection != "undefined") && true;
         var caretOffset = 0;
@@ -66,9 +69,9 @@ var s4yEditor = (function () {
             var range = sel.getRangeAt(0);
             var preCaretRange = range.cloneRange();
             preCaretRange.selectNodeContents(editorElement);
-            length = preCaretRange.toString().length;
+            length = preCaretRange.toString().trim().length;
             preCaretRange.setEnd(range.endContainer, range.endOffset);
-            caretOffset = preCaretRange.toString().length;
+            caretOffset = preCaretRange.toString().trim().length;
         } else if (ie) {
             var textRange = document.selection.createRange();
             var preCaretTextRange = document.body.createTextRange();
