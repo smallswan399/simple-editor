@@ -5,7 +5,9 @@
 var s4yEditor = (function () {
     'use strict';
 
-    var editorElement, editorDefaultContent = '<p><br></p>';
+    var editorElement;
+    var editorDefaultContent = '<p><br></p>';
+    var caretPositionElement;
 
     // ======================== Private members =================================
     // Tydy the html text
@@ -19,53 +21,86 @@ var s4yEditor = (function () {
         })
         return body.innerHTML;
     }
-    
+
     // De-minify html text
     function formatText(htmlText) {
-    
+
         var div = document.createElement('div');
         div.innerHTML = htmlText.trim();
-    
+
         return formatNode(div, 0).innerHTML;
     }
-    
+
     // De-minify html node
     function formatNode(node, level) {
-    
+
         var indentBefore = new Array(level++ + 1).join('  '),
-            indentAfter  = new Array(level - 1).join('  '),
+            indentAfter = new Array(level - 1).join('  '),
             textNode;
-    
+
         for (var i = 0; i < node.children.length; i++) {
-    
+
             textNode = document.createTextNode('\n' + indentBefore);
             node.insertBefore(textNode, node.children[i]);
-    
+
             formatNode(node.children[i], level);
-    
+
             if (node.lastElementChild == node.children[i]) {
                 textNode = document.createTextNode('\n' + indentAfter);
                 node.appendChild(textNode);
             }
         }
-    
+
         return node;
     }
 
+    // Show current caret position
+    function showCaretPosition() {
+        var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+        var w3 = (typeof window.getSelection != "undefined") && true;
+        var caretOffset = 0;
+        var length = 0;
+        if (w3) {
+            var sel = window.getSelection && window.getSelection();
+            if (!sel || sel.rangeCount <= 0) return;
+            var range = sel.getRangeAt(0);
+            var preCaretRange = range.cloneRange();
+            preCaretRange.selectNodeContents(editorElement);
+            length = preCaretRange.toString().length;
+            preCaretRange.setEnd(range.endContainer, range.endOffset);
+            caretOffset = preCaretRange.toString().length;
+        } else if (ie) {
+            var textRange = document.selection.createRange();
+            var preCaretTextRange = document.body.createTextRange();
+            preCaretTextRange.moveToElementText(editorElement);
+            preCaretTextRange.setEndPoint("EndToEnd", textRange);
+            caretOffset = preCaretTextRange.text.length;
+        }
+        caretPositionElement.innerText = caretOffset + "/" + length;
+        console.log(caretOffset + "/" + length);
+        return caretOffset + "/" + length;
+    }
+
     // ======================== Exported members ================================
-    function initEditor(editorId) {
+    function initEditor(editorId, caretPositionId) {
+        caretPositionElement = document.getElementById(caretPositionId);
         editorElement = document.getElementById(editorId);
         editorElement.innerHTML = editorDefaultContent;
         editorElement.addEventListener('keydown', function (e) {
             if (!editorElement.innerHTML.trim()) {
                 editorElement.innerHTML = editorDefaultContent;
             }
+            showCaretPosition();
         });
         editorElement.addEventListener('keyup', function (e) {
             if (!editorElement.innerHTML.trim()) {
                 editorElement.innerHTML = editorDefaultContent;
             }
+            showCaretPosition();
         });
+        editorElement.addEventListener('mousedown', showCaretPosition);
+        editorElement.addEventListener('mouseup', showCaretPosition);
+        
         document.execCommand("defaultParagraphSeparator", false, "p");
         if (document.compForm.switchMode.checked) { setMode(true); }
     }
@@ -110,7 +145,7 @@ var s4yEditor = (function () {
     }
 
     function clean() {
-        if(validateMode() && confirm('Are you sure?')){
+        if (validateMode() && confirm('Are you sure?')) {
             editorElement.innerHTML = editorDefaultContent;
         };
     }
