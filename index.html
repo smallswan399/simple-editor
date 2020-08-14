@@ -28,7 +28,8 @@
         function setDocMode(bToSource) {
             var oContent;
             if (bToSource) {
-                oContent = document.createTextNode(formatText(tidy(oDoc.innerHTML.replace(/\n|\t/g, '').trim())));
+                var rawText = formatText(tidy(oDoc.innerHTML.replace(/\n|\t/g, '').trim()));
+                oContent = document.createTextNode(rawText.trim());
                 oDoc.innerHTML = "";
                 var oPre = document.createElement("pre");
                 oDoc.contentEditable = false;
