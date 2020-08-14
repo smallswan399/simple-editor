@@ -9,6 +9,7 @@
         function initDoc() {
             oDoc = document.getElementById("textBox");
             sDefTxt = oDoc.innerHTML;
+            document.execCommand("defaultParagraphSeparator", false, "p");
             if (document.compForm.switchMode.checked) { setDocMode(true); }
         }
 
@@ -26,7 +27,7 @@
         function setDocMode(bToSource) {
             var oContent;
             if (bToSource) {
-                oContent = document.createTextNode(oDoc.innerHTML);
+                oContent = document.createTextNode(oDoc.innerHTML.trim());
                 oDoc.innerHTML = "";
                 var oPre = document.createElement("pre");
                 oDoc.contentEditable = false;
@@ -34,7 +35,6 @@
                 oPre.contentEditable = true;
                 oPre.appendChild(oContent);
                 oDoc.appendChild(oPre);
-                document.execCommand("defaultParagraphSeparator", false, "p");
             } else {
                 if (document.all) {
                     oDoc.innerHTML = oDoc.innerText;
@@ -182,7 +182,6 @@
                 src="data:image/gif;base64,R0lGODlhFgAWAIQUAD04KTRLY2tXQF9vj414WZWIbXmOrpqbmpGjudClFaezxsa0cb/I1+3YitHa7PrkIPHvbuPs+/fvrvv8/f///////////////////////////////////////////////yH5BAEAAB8ALAAAAAAWABYAAAWN4CeOZGmeaKqubGsusPvBSyFJjVDs6nJLB0khR4AkBCmfsCGBQAoCwjF5gwquVykSFbwZE+AwIBV0GhFog2EwIDchjwRiQo9E2Fx4XD5R+B0DDAEnBXBhBhN2DgwDAQFjJYVhCQYRfgoIDGiQJAWTCQMRiwwMfgicnVcAAAMOaK+bLAOrtLUyt7i5uiUhADs=" />
         </div>
         <div id="textBox" contenteditable="true">
-            <p><br></p>
         </div>
         <p id="editMode"><input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);" />
             <label for="switchBox">Show HTML</label></p>
