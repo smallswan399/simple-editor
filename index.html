@@ -61,26 +61,8 @@
             oDoc.focus();
         }
 
-        function printDoc() {
-            if (!validateMode()) { return; }
-            var oPrntWin = window.open("", "_blank", "width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
-            oPrntWin.document.open();
-            oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><\/head><body onload=\"print();\">" + oDoc.innerHTML + "<\/body><\/html>");
-            oPrntWin.document.close();
-        }
     </script>
     <style type="text/css">
-        .intLink {
-            cursor: pointer;
-        }
-
-        img.intLink {
-            border: 0;
-        }
-
-        #toolBar1 select {
-            font-size: 10px;
-        }
 
         #textBox {
             width: 540px;
