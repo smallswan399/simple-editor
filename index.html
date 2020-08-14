@@ -3,65 +3,7 @@
 
 <head>
     <title>Editor</title>
-    <script src="tidy.js"></script>
-    <script>
-        var editorElement, editorDefaultContent = '<p><br></p>';
-
-        function initEditor() {
-            editorElement = document.getElementById("textBox");
-            editorElement.innerHTML = editorDefaultContent;
-            editorElement.addEventListener('keydown', function (e) {
-                if (!editorElement.innerHTML.trim()) {
-                    editorElement.innerHTML = editorDefaultContent;
-                }
-            });
-            editorElement.addEventListener('keyup', function (e) {
-                if (!editorElement.innerHTML.trim()) {
-                    editorElement.innerHTML = editorDefaultContent;
-                }
-            });
-            document.execCommand("defaultParagraphSeparator", false, "p");
-            if (document.compForm.switchMode.checked) { setMode(true); }
-        }
-
-        function executeCommand(cmd, value) {
-            if (validateMode()) { document.execCommand(cmd, false, value); editorElement.focus(); }
-        }
-
-        function validateMode() {
-            if (!document.compForm.switchMode.checked) { return true; }
-            alert("Uncheck \"Show HTML\".");
-            editorElement.focus();
-            return false;
-        }
-
-        function setMode(isRawMode) {
-            var content;
-            if (isRawMode) {
-                var rawText = formatText(tidy(editorElement.innerHTML.replace(/\n|\t/g, '').trim()));
-                content = document.createTextNode(rawText.trim());
-                editorElement.innerHTML = "";
-                var rawWrapper = document.createElement("pre");
-                editorElement.contentEditable = false;
-                rawWrapper.id = "sourceText";
-                rawWrapper.contentEditable = true;
-                rawWrapper.appendChild(content);
-                editorElement.appendChild(rawWrapper);
-            } else {
-                content = document.createRange();
-                content.selectNodeContents(editorElement.firstChild);
-                if (!content.toString().trim()) { // Switch to editor mode, check to append the first p if need
-                    editorElement.innerHTML = editorDefaultContent;
-                } else { // Reserve editor content from the pre node
-                    editorElement.innerHTML = content.toString();
-                }
-                // Re make doc element be contentEditable
-                editorElement.contentEditable = true;
-            }
-            editorElement.focus();
-        }
-
-    </script>
+    <script src="s4y-editor.js"></script>
     <style type="text/css">
         #textBox {
             width: 540px;
@@ -95,30 +37,44 @@
         crossorigin="anonymous" />
 </head>
 
-<body onload="initEditor();">
-    <form name="compForm" method="post" action="#"
-        onsubmit="if(validateMode()){this.myDoc.value=editorElement.innerHTML;return true;}return false;">
+<body>
+    <form name="compForm" method="post" action="#" id="form">
         <input type="hidden" name="myDoc">
-        <div id="toolBar2">
-            <button type="button"
-                onclick="if(validateMode()&&confirm('Are you sure?')){editorElement.innerHTML=editorDefaultContent};"><i
-                    class="fa fa-eraser" aria-hidden="true"></i></button>
-            <button type="button" onclick="executeCommand('formatblock','h1');"><strong>H1</strong></button>
-            <button type="button" onclick="executeCommand('formatblock','h2');"><strong>H2</strong></button>
-            <button type="button" onclick="executeCommand('formatblock','p');"><i class="fa fa-paragraph"></i></button>
-            <button type="button" onclick="executeCommand('bold');"><i class="fa fa-bold"></i></button>
-            <button type="button" onclick="executeCommand('italic');"><i class="fa fa-italic"></i></button>
-            <button type="button" onclick="executeCommand('underline');"><i class="fa fa-underline"></i></button>
-            <button type="button" onclick="executeCommand('insertorderedlist');"><i class="fa fa-list-ol"></i></button>
-            <button type="button" onclick="executeCommand('insertunorderedlist');"><i class="fa fa-list"></i></button>
+        <div>
+            <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('formatblock','h1');"><strong>H1</strong></button>
+            <button type="button" onclick="s4yEditor.executeCommand('formatblock','h2');"><strong>H2</strong></button>
+            <button type="button" onclick="s4yEditor.executeCommand('formatblock','p');"><i
+                    class="fa fa-paragraph"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('bold');"><i class="fa fa-bold"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('italic');"><i class="fa fa-italic"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('underline');"><i
+                    class="fa fa-underline"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('insertorderedlist');"><i
+                    class="fa fa-list-ol"></i></button>
+            <button type="button" onclick="s4yEditor.executeCommand('insertunorderedlist');"><i
+                    class="fa fa-list"></i></button>
             <div id="editMode">
-                <input type="checkbox" name="switchMode" id="switchBox" onchange="setMode(this.checked);" />
+                <input type="checkbox" name="switchMode" id="switchBox" onchange="s4yEditor.setMode(this.checked);" />
                 <label for="switchBox">Show HTML</label>
             </div>
         </div>
         <div id="textBox" contenteditable="true"></div>
         <p><input type="submit" value="Send" /></p>
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            s4yEditor.initEditor('textBox');
+            document.querySelector('#form').addEventListener('submit', function (e) {
+                if (s4yEditor.validateMode()) {
+                    this.myDoc.value = s4yEditor.getInnerHtml();
+                } else {
+                    e.preventDefault();
+                }
+            })
+        });
+    </script>
 </body>
 
 </html>
