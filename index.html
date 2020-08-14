@@ -34,7 +34,7 @@
                 oPre.contentEditable = true;
                 oPre.appendChild(oContent);
                 oDoc.appendChild(oPre);
-                document.execCommand("defaultParagraphSeparator", false, "div");
+                document.execCommand("defaultParagraphSeparator", false, "p");
             } else {
                 if (document.all) {
                     oDoc.innerHTML = oDoc.innerText;
