@@ -37,13 +37,14 @@
                 oPre.appendChild(oContent);
                 oDoc.appendChild(oPre);
             } else {
-                if (document.all) {
-                    oDoc.innerHTML = oDoc.innerText;
-                } else {
-                    oContent = document.createRange();
-                    oContent.selectNodeContents(oDoc.firstChild);
+                oContent = document.createRange();
+                oContent.selectNodeContents(oDoc.firstChild);
+                if (!oContent.toString().trim()) { // Switch to editor mode, check to append the first p if need
+                    oDoc.innerHTML = sDefTxt;
+                } else { // Reserve editor content from the pre node
                     oDoc.innerHTML = oContent.toString();
                 }
+                // Re make doc element be contentEditable
                 oDoc.contentEditable = true;
             }
             oDoc.focus();
