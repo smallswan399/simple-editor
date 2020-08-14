@@ -2,68 +2,67 @@
 <html>
 
 <head>
-    <title>Rich Text Editor</title>
+    <title>Editor</title>
     <script src="tidy.js"></script>
-    <script type="text/javascript">
-        var oDoc, sDefTxt = '<p><br></p>';
+    <script>
+        var editorElement, editorDefaultContent = '<p><br></p>';
 
-        function initDoc() {
-            oDoc = document.getElementById("textBox");
-            oDoc.innerHTML = sDefTxt;
-            oDoc.addEventListener('keydown', function (e) {
-                if (!oDoc.innerHTML.trim()) {
-                    oDoc.innerHTML = sDefTxt;
+        function initEditor() {
+            editorElement = document.getElementById("textBox");
+            editorElement.innerHTML = editorDefaultContent;
+            editorElement.addEventListener('keydown', function (e) {
+                if (!editorElement.innerHTML.trim()) {
+                    editorElement.innerHTML = editorDefaultContent;
                 }
             });
-            oDoc.addEventListener('keyup', function (e) {
-                if (!oDoc.innerHTML.trim()) {
-                    oDoc.innerHTML = sDefTxt;
+            editorElement.addEventListener('keyup', function (e) {
+                if (!editorElement.innerHTML.trim()) {
+                    editorElement.innerHTML = editorDefaultContent;
                 }
             });
             document.execCommand("defaultParagraphSeparator", false, "p");
-            if (document.compForm.switchMode.checked) { setDocMode(true); }
+            if (document.compForm.switchMode.checked) { setMode(true); }
         }
 
-        function formatDoc(sCmd, sValue) {
-            if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
+        function executeCommand(cmd, value) {
+            if (validateMode()) { document.execCommand(cmd, false, value); editorElement.focus(); }
         }
 
         function validateMode() {
             if (!document.compForm.switchMode.checked) { return true; }
             alert("Uncheck \"Show HTML\".");
-            oDoc.focus();
+            editorElement.focus();
             return false;
         }
 
-        function setDocMode(bToSource) {
-            var oContent;
-            if (bToSource) {
-                var rawText = formatText(tidy(oDoc.innerHTML.replace(/\n|\t/g, '').trim()));
-                oContent = document.createTextNode(rawText.trim());
-                oDoc.innerHTML = "";
-                var oPre = document.createElement("pre");
-                oDoc.contentEditable = false;
-                oPre.id = "sourceText";
-                oPre.contentEditable = true;
-                oPre.appendChild(oContent);
-                oDoc.appendChild(oPre);
+        function setMode(isRawMode) {
+            var content;
+            if (isRawMode) {
+                var rawText = formatText(tidy(editorElement.innerHTML.replace(/\n|\t/g, '').trim()));
+                content = document.createTextNode(rawText.trim());
+                editorElement.innerHTML = "";
+                var rawWrapper = document.createElement("pre");
+                editorElement.contentEditable = false;
+                rawWrapper.id = "sourceText";
+                rawWrapper.contentEditable = true;
+                rawWrapper.appendChild(content);
+                editorElement.appendChild(rawWrapper);
             } else {
-                oContent = document.createRange();
-                oContent.selectNodeContents(oDoc.firstChild);
-                if (!oContent.toString().trim()) { // Switch to editor mode, check to append the first p if need
-                    oDoc.innerHTML = sDefTxt;
+                content = document.createRange();
+                content.selectNodeContents(editorElement.firstChild);
+                if (!content.toString().trim()) { // Switch to editor mode, check to append the first p if need
+                    editorElement.innerHTML = editorDefaultContent;
                 } else { // Reserve editor content from the pre node
-                    oDoc.innerHTML = oContent.toString();
+                    editorElement.innerHTML = content.toString();
                 }
                 // Re make doc element be contentEditable
-                oDoc.contentEditable = true;
+                editorElement.contentEditable = true;
             }
-            oDoc.focus();
+            editorElement.focus();
         }
 
     </script>
     <style type="text/css">
-
         #textBox {
             width: 540px;
             height: 200px;
@@ -82,9 +81,11 @@
         #textBox p:first-child {
             margin-top: 0;
         }
+
         #editMode {
             display: inline-block;
         }
+
         #editMode label {
             cursor: pointer;
         }
@@ -94,23 +95,24 @@
         crossorigin="anonymous" />
 </head>
 
-<body onload="initDoc();">
+<body onload="initEditor();">
     <form name="compForm" method="post" action="#"
-        onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
+        onsubmit="if(validateMode()){this.myDoc.value=editorElement.innerHTML;return true;}return false;">
         <input type="hidden" name="myDoc">
         <div id="toolBar2">
-            <button type="button" onclick="if(validateMode()&&confirm('Are you sure?')){oDoc.innerHTML=sDefTxt};"><i
+            <button type="button"
+                onclick="if(validateMode()&&confirm('Are you sure?')){editorElement.innerHTML=editorDefaultContent};"><i
                     class="fa fa-eraser" aria-hidden="true"></i></button>
-            <button type="button" onclick="formatDoc('formatblock','h1');"><strong>H1</strong></button>
-            <button type="button" onclick="formatDoc('formatblock','h2');"><strong>H2</strong></button>
-            <button type="button" onclick="formatDoc('formatblock','p');"><i class="fa fa-paragraph"></i></button>
-            <button type="button" onclick="formatDoc('bold');"><i class="fa fa-bold"></i></button>
-            <button type="button" onclick="formatDoc('italic');"><i class="fa fa-italic"></i></button>
-            <button type="button" onclick="formatDoc('underline');"><i class="fa fa-underline"></i></button>
-            <button type="button" onclick="formatDoc('insertorderedlist');"><i class="fa fa-list-ol"></i></button>
-            <button type="button" onclick="formatDoc('insertunorderedlist');"><i class="fa fa-list"></i></button>
+            <button type="button" onclick="executeCommand('formatblock','h1');"><strong>H1</strong></button>
+            <button type="button" onclick="executeCommand('formatblock','h2');"><strong>H2</strong></button>
+            <button type="button" onclick="executeCommand('formatblock','p');"><i class="fa fa-paragraph"></i></button>
+            <button type="button" onclick="executeCommand('bold');"><i class="fa fa-bold"></i></button>
+            <button type="button" onclick="executeCommand('italic');"><i class="fa fa-italic"></i></button>
+            <button type="button" onclick="executeCommand('underline');"><i class="fa fa-underline"></i></button>
+            <button type="button" onclick="executeCommand('insertorderedlist');"><i class="fa fa-list-ol"></i></button>
+            <button type="button" onclick="executeCommand('insertunorderedlist');"><i class="fa fa-list"></i></button>
             <div id="editMode">
-                <input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);" />
+                <input type="checkbox" name="switchMode" id="switchBox" onchange="setMode(this.checked);" />
                 <label for="switchBox">Show HTML</label>
             </div>
         </div>
