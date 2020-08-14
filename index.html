@@ -4,6 +4,7 @@
 <head>
     <title>Rich Text Editor</title>
     <script src='http://lovasoa.github.io/tidy-html5/tidy.js'></script>
+    <script src="tidy.js"></script>
     <script type="text/javascript">
         options = {
             "indent": "auto",
@@ -45,7 +46,7 @@
         function setDocMode(bToSource) {
             var oContent;
             if (bToSource) {
-                oContent = document.createTextNode(tidy_html5(oDoc.innerHTML.trim(), options));
+                oContent = document.createTextNode(formatText(tidy(oDoc.innerHTML.replace(/\n|\t/g, '').trim())));
                 oDoc.innerHTML = "";
                 var oPre = document.createElement("pre");
                 oDoc.contentEditable = false;
