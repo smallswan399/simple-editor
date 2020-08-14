@@ -58,6 +58,7 @@
                 <input type="checkbox" name="switchMode" id="switchBox" onchange="s4yEditor.setMode(this.checked);" />
                 <label for="switchBox">Show HTML</label>
             </div>
+            <small><i>Position: <span id="caret">0/0</span></i></small>
         </div>
         <div id="textBox" contenteditable="true"></div>
         <p><input type="submit" value="Send" /></p>
@@ -65,7 +66,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function (e) {
-            s4yEditor.initEditor('textBox');
+            s4yEditor.initEditor('textBox', 'caret');
             document.querySelector('#form').addEventListener('submit', function (e) {
                 if (s4yEditor.validateMode()) {
                     this.myDoc.value = s4yEditor.getInnerHtml();
