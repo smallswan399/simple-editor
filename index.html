@@ -4,11 +4,11 @@
 <head>
     <title>Rich Text Editor</title>
     <script type="text/javascript">
-        var oDoc, sDefTxt;
+        var oDoc, sDefTxt = '<p><br></p>';
 
         function initDoc() {
             oDoc = document.getElementById("textBox");
-            sDefTxt = oDoc.innerHTML;
+            oDoc.innerHTML = sDefTxt;
             document.execCommand("defaultParagraphSeparator", false, "p");
             if (document.compForm.switchMode.checked) { setDocMode(true); }
         }
