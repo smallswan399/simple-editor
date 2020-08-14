@@ -12,7 +12,7 @@ var s4yEditor = (function () {
     // ======================== Private members =================================
     // Tydy the html text
     function tidy(htmlText) {
-        const body = document.createElement('body');
+        var body = document.createElement('body');
         body.innerHTML = htmlText;
         body.querySelectorAll('p').forEach(function (p) {
             if (!p.innerHTML) {
