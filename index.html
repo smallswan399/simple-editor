@@ -10,6 +10,16 @@
         function initDoc() {
             oDoc = document.getElementById("textBox");
             oDoc.innerHTML = sDefTxt;
+            oDoc.addEventListener('keydown', function (e) {
+                if (!oDoc.innerHTML.trim()) {
+                    oDoc.innerHTML = sDefTxt;
+                }
+            });
+            oDoc.addEventListener('keyup', function (e) {
+                if (!oDoc.innerHTML.trim()) {
+                    oDoc.innerHTML = sDefTxt;
+                }
+            });
             document.execCommand("defaultParagraphSeparator", false, "p");
             if (document.compForm.switchMode.checked) { setDocMode(true); }
         }
@@ -85,6 +95,10 @@
             margin: 0;
             min-width: 498px;
             min-height: 200px;
+        }
+
+        #textBox p:first-child {
+            margin-top: 0;
         }
 
         #editMode label {
