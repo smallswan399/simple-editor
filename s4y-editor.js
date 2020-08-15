@@ -1,6 +1,11 @@
 /*
 */
 
+// missing forEach on NodeList for IE11
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
 // Export module to global
 var s4yEditor = (function () {
     'use strict';
@@ -103,7 +108,7 @@ var s4yEditor = (function () {
         });
         editorElement.addEventListener('mousedown', showCaretPosition);
         editorElement.addEventListener('mouseup', showCaretPosition);
-        
+
         document.execCommand("defaultParagraphSeparator", false, "p");
         if (document.compForm.switchMode.checked) { setMode(true); }
     }
