@@ -114,7 +114,11 @@ var s4yEditor = (function () {
     }
 
     function executeCommand(cmd, value) {
-        if (validateMode()) { document.execCommand(cmd, false, value); editorElement.focus(); }
+        if (validateMode()) { 
+            var result = document.execCommand(cmd, false, value); 
+            editorElement.focus();
+            return result;
+        }
     }
 
     // Check the editor in editor or raw mode
