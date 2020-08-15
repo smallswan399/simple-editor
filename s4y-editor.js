@@ -11,7 +11,6 @@ var s4yEditor = (function () {
     'use strict';
 
     var editorElement;
-    var editorDefaultContent = '<p><br></p>';
     var caretPositionElement;
 
     // ======================== Private members =================================
@@ -93,19 +92,8 @@ var s4yEditor = (function () {
     function initEditor(editorId, caretPositionId) {
         caretPositionElement = document.getElementById(caretPositionId);
         editorElement = document.getElementById(editorId);
-        editorElement.innerHTML = editorDefaultContent;
-        editorElement.addEventListener('keydown', function (e) {
-            if (!editorElement.innerHTML.trim()) {
-                editorElement.innerHTML = editorDefaultContent;
-            }
-            showCaretPosition();
-        });
-        editorElement.addEventListener('keyup', function (e) {
-            if (!editorElement.innerHTML.trim()) {
-                editorElement.innerHTML = editorDefaultContent;
-            }
-            showCaretPosition();
-        });
+        editorElement.addEventListener('keydown', showCaretPosition);
+        editorElement.addEventListener('keyup', showCaretPosition);
         editorElement.addEventListener('mousedown', showCaretPosition);
         editorElement.addEventListener('mouseup', showCaretPosition);
 
@@ -145,11 +133,7 @@ var s4yEditor = (function () {
         } else {
             content = document.createRange();
             content.selectNodeContents(editorElement.firstChild);
-            if (!content.toString().trim()) { // Switch to editor mode, check to append the first p if need
-                editorElement.innerHTML = editorDefaultContent;
-            } else { // Reserve editor content from the pre node
-                editorElement.innerHTML = content.toString();
-            }
+            editorElement.innerHTML = content.toString();
             // Re make doc element be contentEditable
             editorElement.contentEditable = true;
         }
@@ -158,7 +142,7 @@ var s4yEditor = (function () {
 
     function clean() {
         if (validateMode() && confirm('Are you sure?')) {
-            editorElement.innerHTML = editorDefaultContent;
+            editorElement.innerHTML = '';
         };
     }
 
