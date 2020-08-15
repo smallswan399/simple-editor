@@ -132,7 +132,7 @@ var s4yEditor = (function () {
             editorElement.appendChild(rawWrapper);
         } else {
             content = document.createRange();
-            content.selectNodeContents(editorElement.firstChild);
+            content.selectNodeContents(document.getElementById('sourceText'));
             editorElement.innerHTML = content.toString();
             // Re make doc element be contentEditable
             editorElement.contentEditable = true;
@@ -158,8 +158,7 @@ var s4yEditor = (function () {
         validateMode: validateMode,
         setMode: setMode,
         clean: clean,
-        getInnerHtml: getInnerHtml,
-        editorElement: editorElement
+        getInnerHtml: getInnerHtml
     };
 })();
 
