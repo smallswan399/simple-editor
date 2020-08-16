@@ -161,18 +161,17 @@ var s4yEditor = (function () {
         });
 
         /* Mode:
-        <div id="editMode">
-                    <input type="checkbox" name="switchMode" id="switchBox"
-                        onchange="s4yEditor.setMode(this.checked);" />
-                    <label for="switchBox">Show HTML</label>
+        <div class="sy4-editor-mode">
+                    <input type="checkbox" id="sy4-editor-switch-box" />
+                    <label for="sy4-editor-switch-box">Show HTML</label>
                 </div>
         */
-        var editModeDiv = el('div', { id: 'editMode' }, [
-            el('input', { type: 'checkbox', name: 'switchMode', id: 'switchBox' }),
-            el('label', { for: 'switchBox' }, 'Show HTML')
+        var editModeDiv = el('div', { class: 'sy4-editor-mode' }, [
+            el('input', { type: 'checkbox', id: 'sy4-editor-switch-box' }),
+            el('label', { for: 'sy4-editor-switch-box' }, 'Show HTML')
         ]);
-        // caret position: <small><i>Position: <span id="caret">0/0</span></i></small>
-        var caretSmall = el('small', el('i', 'Position: ', el('span', { id: 'caret' }, '0/0')));
+        // caret position: <small><i>Position: <span>0/0</span></i></small>
+        var caretSmall = el('small', el('i', 'Position: ', el('span', '0/0')));
         // append buttons to toolbar
         toolBarDiv.appendChild(cleanBtn);
         toolBarDiv.appendChild(h1Btn);
@@ -187,13 +186,13 @@ var s4yEditor = (function () {
         toolBarDiv.appendChild(caretSmall);
         // Complete construct toolbar div
 
-        // Construct contenteditable div: <div id="textBox" class="text-box" contenteditable="true"></div>
-        var textBoxDiv = el('div', {id: 'textBox', class: 'text-box', contenteditable: 'true'});
+        // Construct contenteditable div: <div class="sy4-editor-textbox" contenteditable="true"></div>
+        var textBoxDiv = el('div', {class: 'sy4-editor-textbox', contenteditable: 'true'});
 
         editorContainer.appendChild(toolBarDiv);
         editorContainer.appendChild(textBoxDiv);
 
-        caretPositionElement = caretSmall.children[0].children[0]; // Get <span id="caret">0/0</span>
+        caretPositionElement = caretSmall.children[0].children[0]; // Get <span>0/0</span>
         switchModeElement = editModeDiv.children[0];
         switchModeElement.addEventListener('change', function (e) {
             setMode(e.target.checked);
@@ -234,13 +233,13 @@ var s4yEditor = (function () {
             editorElement.innerHTML = "";
             var rawWrapper = document.createElement("pre");
             editorElement.contentEditable = false;
-            rawWrapper.id = "sourceText";
+            rawWrapper.className = "s4y-editor-raw";
             rawWrapper.contentEditable = true;
             rawWrapper.appendChild(content);
             editorElement.appendChild(rawWrapper);
         } else {
             content = document.createRange();
-            content.selectNodeContents(document.getElementById('sourceText'));
+            content.selectNodeContents(editorElement.children[0]);
             editorElement.innerHTML = content.toString();
             // Re make doc element be contentEditable
             editorElement.contentEditable = true;

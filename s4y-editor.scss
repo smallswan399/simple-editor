@@ -1,32 +1,30 @@
-#editor {
+.sy4-editor-container {
     border: 1px #000000 solid;
 }
 
-#editor .sy4-editor-toolbar {
+.sy4-editor-toolbar {
     border-bottom: 1px #000000 solid;
 }
 
-#textBox {
-    /* width: 540px; */
+.sy4-editor-textbox {
     height: 200px;
-    /* border: 1px #000000 solid; */
     padding: 12px;
     overflow: scroll;
     outline: none;
+
+    .s4y-editor-raw {
+        padding: 0;
+        margin: 0;
+        min-width: 498px;
+        min-height: 200px;
+        outline: none;
+    }
 }
 
-#textBox #sourceText {
-    padding: 0;
-    margin: 0;
-    min-width: 498px;
-    min-height: 200px;
-    outline: none;
-}
-
-#editMode {
+.sy4-editor-mode {
     display: inline-block;
-}
 
-#editMode label {
-    cursor: pointer;
+    label {
+        cursor: pointer;
+    }
 }

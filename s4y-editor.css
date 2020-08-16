@@ -1,0 +1,30 @@
+.sy4-editor-container {
+  border: 1px #000000 solid;
+}
+
+.sy4-editor-toolbar {
+  border-bottom: 1px #000000 solid;
+}
+
+.sy4-editor-textbox {
+  height: 200px;
+  padding: 12px;
+  overflow: scroll;
+  outline: none;
+}
+.sy4-editor-textbox .s4y-editor-raw {
+  padding: 0;
+  margin: 0;
+  min-width: 498px;
+  min-height: 200px;
+  outline: none;
+}
+
+.sy4-editor-mode {
+  display: inline-block;
+}
+.sy4-editor-mode label {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=s4y-editor.css.map */
