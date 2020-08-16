@@ -1,6 +1,6 @@
 /*
     16/08/2020 Dang Nguyen
-    
+
 */
 
 // missing forEach on NodeList for IE11
@@ -168,7 +168,7 @@ var s4yEditor = (function () {
                 </div>
         */
         var editModeDiv = el('div', { id: 'editMode' }, [
-            el('input', { type: 'checkbox', name: 'switchMode', id: 'switchBox', onchange: 'setMode(this.checked);' }),
+            el('input', { type: 'checkbox', name: 'switchMode', id: 'switchBox' }),
             el('label', { for: 'switchBox' }, 'Show HTML')
         ]);
         // caret position: <small><i>Position: <span id="caret">0/0</span></i></small>
@@ -195,8 +195,11 @@ var s4yEditor = (function () {
 
         caretPositionElement = caretSmall.children[0].children[0]; // Get <span id="caret">0/0</span>
         switchModeElement = editModeDiv.children[0];
-        editorElement = textBoxDiv;
+        switchModeElement.addEventListener('change', function (e) {
+            setMode(e.target.checked);
+        });
 
+        editorElement = textBoxDiv;
         editorElement.addEventListener('keydown', showCaretPosition);
         editorElement.addEventListener('keyup', showCaretPosition);
         editorElement.addEventListener('mousedown', showCaretPosition);
