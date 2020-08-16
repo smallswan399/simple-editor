@@ -97,7 +97,7 @@ var s4yEditor = (function () {
     function initEditor(editorContainerId) {
         var editorContainer = document.getElementById(editorContainerId);
         // Create toolbar div
-        var toolBarDiv = el('div');
+        var toolBarDiv = el('div', {class: 'sy4-editor-toolbar'});
 
         // cleanBtn: <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser"></i></button>
         var cleanBtn = el('button', { type: 'button' }, [

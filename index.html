@@ -6,12 +6,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.27.1/redom.min.js"></script>
     <script src="s4y-editor.js"></script>
     <style type="text/css">
-        #textBox {
-            width: 540px;
-            height: 200px;
+        #editor {
             border: 1px #000000 solid;
+        }
+        #editor .sy4-editor-toolbar {
+            border-bottom: 1px #000000 solid;
+        }
+        #textBox {
+            /* width: 540px; */
+            height: 200px;
+            /* border: 1px #000000 solid; */
             padding: 12px;
             overflow: scroll;
+            outline: none;
         }
 
         #textBox #sourceText {
@@ -19,6 +26,7 @@
             margin: 0;
             min-width: 498px;
             min-height: 200px;
+            outline: none;
         }
 
         /* #textBox p:first-child {
