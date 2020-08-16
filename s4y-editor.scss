@@ -1,8 +1,8 @@
-.sy4-editor-container {
+.s4y-editor-container {
     border: 1px #000000 solid;
 }
 
-.sy4-editor-toolbar {
+.s4y-editor-toolbar {
     border-bottom: 1px #000000 solid;
 
     button {
@@ -10,7 +10,7 @@
     }
 }
 
-.sy4-editor-textbox {
+.s4y-editor-textbox {
     height: 200px;
     padding: 12px;
     overflow: scroll;
@@ -31,7 +31,7 @@
     }
 }
 
-.sy4-editor-mode {
+.s4y-editor-mode {
     display: inline-block;
 
     label {

@@ -97,7 +97,7 @@ var s4yEditor = (function () {
     function initEditor(editorContainerId) {
         var editorContainer = document.getElementById(editorContainerId);
         // Create toolbar div
-        var toolBarDiv = el('div', {class: 'sy4-editor-toolbar'});
+        var toolBarDiv = el('div', {class: 's4y-editor-toolbar'});
 
         // cleanBtn: <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser"></i></button>
         var cleanBtn = el('button', { type: 'button' }, [
@@ -161,14 +161,14 @@ var s4yEditor = (function () {
         });
 
         /* Mode:
-        <div class="sy4-editor-mode">
-                    <input type="checkbox" id="sy4-editor-switch-box" />
-                    <label for="sy4-editor-switch-box">Show HTML</label>
+        <div class="s4y-editor-mode">
+                    <input type="checkbox" id="s4y-editor-switch-box" />
+                    <label for="s4y-editor-switch-box">Show HTML</label>
                 </div>
         */
-        var editModeDiv = el('div', { class: 'sy4-editor-mode' }, [
-            el('input', { type: 'checkbox', id: 'sy4-editor-switch-box' }),
-            el('label', { for: 'sy4-editor-switch-box' }, 'Show HTML')
+        var editModeDiv = el('div', { class: 's4y-editor-mode' }, [
+            el('input', { type: 'checkbox', id: 's4y-editor-switch-box' }),
+            el('label', { for: 's4y-editor-switch-box' }, 'Show HTML')
         ]);
         // caret position: <small><i>Position: <span>0/0</span></i></small>
         var caretSmall = el('small', el('i', 'Position: ', el('span', '0/0')));
@@ -186,8 +186,8 @@ var s4yEditor = (function () {
         toolBarDiv.appendChild(caretSmall);
         // Complete construct toolbar div
 
-        // Construct contenteditable div: <div class="sy4-editor-textbox" contenteditable="true"></div>
-        var textBoxDiv = el('div', {class: 'sy4-editor-textbox', contenteditable: 'true'});
+        // Construct contenteditable div: <div class="s4y-editor-textbox" contenteditable="true"></div>
+        var textBoxDiv = el('div', {class: 's4y-editor-textbox', contenteditable: 'true'});
 
         editorContainer.appendChild(toolBarDiv);
         editorContainer.appendChild(textBoxDiv);
