@@ -100,12 +100,12 @@ var s4yEditor = (function () {
         var toolBarDiv = el('div', {class: 's4y-editor-toolbar'});
 
         // cleanBtn: <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser"></i></button>
-        var cleanBtn = el('button', { type: 'button' }, [
+        var cleanBtn = el('button', { type: 'button', class: 'btn btn-default' }, [
             el('i', { class: 'fa fa-eraser' })
         ]);
         cleanBtn.addEventListener('click', s4yEditor.clean);
         // h1: <button type="button" id="h1"><strong>H1</strong></button>
-        var h1Btn = el('button', { type: 'button' }, [el('strong', 'H1')]);
+        var h1Btn = el('button', { type: 'button', class: 'btn btn-default' }, [el('strong', 'H1')]);
         h1Btn.addEventListener('click', function () {
             var result = executeCommand('formatblock', 'h1');
             if (!result) {
@@ -113,7 +113,7 @@ var s4yEditor = (function () {
             }
         });
         // h2: <button type="button" id="h2"><strong>H2</strong></button>
-        var h2Btn = el('button', { type: 'button' }, [el('strong', 'H2')]);
+        var h2Btn = el('button', { type: 'button', class: 'btn btn-default' }, [el('strong', 'H2')]);
         h2Btn.addEventListener('click', function () {
             var result = executeCommand('formatblock', 'h2');
             if (!result) {
@@ -121,7 +121,7 @@ var s4yEditor = (function () {
             }
         });
         // p: <button type="button" id="p"><i class="fa fa-paragraph"></i></button>
-        var pBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-paragraph' })]);
+        var pBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-paragraph' })]);
         pBtn.addEventListener('click', function () {
             var result = executeCommand('formatblock', 'p');
             if (!result) {
@@ -129,22 +129,22 @@ var s4yEditor = (function () {
             }
         });
         // bold: <button type="button" onclick="s4yEditor.executeCommand('bold');"><i class="fa fa-bold"></i></button>
-        var boldBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-bold' })]);
+        var boldBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-bold' })]);
         boldBtn.addEventListener('click', function () {
             executeCommand('bold');
         });
         // italic: <button type="button" onclick="s4yEditor.executeCommand('italic');"><i class="fa fa-italic"></i></button>
-        var italicBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-italic' })]);
+        var italicBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-italic' })]);
         italicBtn.addEventListener('click', function () {
             executeCommand('italic');
         });
         // underline: <button type="button" onclick="s4yEditor.executeCommand('underline');"><i class="fa fa-underline"></i></button>
-        var underlineBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-underline' })]);
+        var underlineBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-underline' })]);
         underlineBtn.addEventListener('click', function () {
             executeCommand('underline');
         });
         // ol: <button type="button" id="ol"><i class="fa fa-list-ol"></i></button>
-        var olBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-list-ol' })]);
+        var olBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-list-ol' })]);
         olBtn.addEventListener('click', function () {
             var result = executeCommand('insertOrderedList');
             if (!result) {
@@ -152,7 +152,7 @@ var s4yEditor = (function () {
             }
         });
         // ul: <button type="button" id="ul"><i class="fa fa-list"></i></button>
-        var ulBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-list' })]);
+        var ulBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-list' })]);
         ulBtn.addEventListener('click', function () {
             var result = executeCommand('insertUnorderedList');
             if (!result) {

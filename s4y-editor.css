@@ -4,9 +4,11 @@
 
 .s4y-editor-toolbar {
   border-bottom: 1px #000000 solid;
+  padding: 4px;
 }
 .s4y-editor-toolbar button {
   cursor: pointer;
+  margin-right: 2px;
 }
 
 .s4y-editor-textbox {
