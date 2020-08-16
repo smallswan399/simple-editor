@@ -3,6 +3,7 @@
 
 <head>
     <title>Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.27.1/redom.min.js"></script>
     <script src="s4y-editor.js"></script>
     <style type="text/css">
         #textBox {
@@ -40,67 +41,18 @@
 <body>
     <form name="compForm" method="post" action="#" id="form">
         <input type="hidden" name="myDoc">
-        <div>
-            <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-            <button type="button" id="h1"><strong>H1</strong></button>
-            <button type="button" id="h2"><strong>H2</strong></button>
-            <button type="button" id="p"><i class="fa fa-paragraph"></i></button>
-            <button type="button" onclick="s4yEditor.executeCommand('bold');"><i class="fa fa-bold"></i></button>
-            <button type="button" onclick="s4yEditor.executeCommand('italic');"><i class="fa fa-italic"></i></button>
-            <button type="button" onclick="s4yEditor.executeCommand('underline');"><i class="fa fa-underline"></i></button>
-            <button type="button" id="ol"><i class="fa fa-list-ol"></i></button>
-            <button type="button" id="ul"><i class="fa fa-list"></i></button>
-            <div id="editMode">
-                <input type="checkbox" name="switchMode" id="switchBox" onchange="s4yEditor.setMode(this.checked);" />
-                <label for="switchBox">Show HTML</label>
-            </div>
-            <small><i>Position: <span id="caret">0/0</span></i></small>
-        </div>
-        <div id="textBox" contenteditable="true"></div>
-        <p><input type="submit" value="Send" /></p>
+        <div id="editor"></div>
+        <input type="submit" value="Send" />
     </form>
 
     <script>
         document.addEventListener("DOMContentLoaded", function (e) {
-            s4yEditor.initEditor('textBox', 'caret');
+            s4yEditor.initEditor('editor');
             document.querySelector('#form').addEventListener('submit', function (e) {
                 if (s4yEditor.validateMode()) {
                     this.myDoc.value = s4yEditor.getInnerHtml();
                 } else {
                     e.preventDefault();
-                }
-            });
-
-            document.getElementById('h1').addEventListener('click', function () {
-                var result = s4yEditor.executeCommand('formatblock','h1');
-                if (!result) {
-                    result = s4yEditor.executeCommand('formatblock','<H1>');
-                }
-            });
-            document.getElementById('h2').addEventListener('click', function () {
-                var result = s4yEditor.executeCommand('formatblock','h2');
-                if (!result) {
-                    result = s4yEditor.executeCommand('formatblock','<H2>');
-                }
-            });
-            document.getElementById('p').addEventListener('click', function () {
-                var result = s4yEditor.executeCommand('formatblock','p');
-                if (!result) {
-                    result = s4yEditor.executeCommand('formatblock','<P>');
-                }
-            });
-
-            document.getElementById('ol').addEventListener('click', function () {
-                var result = s4yEditor.executeCommand('insertOrderedList');
-                if (!result) {
-                    result = s4yEditor.executeCommand('InsertOrderedList');
-                }
-            });
-
-            document.getElementById('ul').addEventListener('click', function () {
-                var result = s4yEditor.executeCommand('insertUnorderedList');
-                if (!result) {
-                    result = s4yEditor.executeCommand('InsertUnorderedList');
                 }
             });
         });

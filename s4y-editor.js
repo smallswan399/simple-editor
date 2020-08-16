@@ -1,4 +1,6 @@
 /*
+    16/08/2020 Dang Nguyen
+    
 */
 
 // missing forEach on NodeList for IE11
@@ -10,8 +12,11 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 var s4yEditor = (function () {
     'use strict';
 
+    var el = redom.el;
+    var mount = redom.mount;
     var editorElement;
     var caretPositionElement;
+    var switchModeElement;
 
     // ======================== Private members =================================
     // Tydy the html text
@@ -60,7 +65,7 @@ var s4yEditor = (function () {
 
     // Show current caret position
     function showCaretPosition() {
-        if (document.compForm.switchMode.checked === true) {
+        if (switchModeElement.checked === true) {
             return;
         }
         var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
@@ -89,21 +94,121 @@ var s4yEditor = (function () {
     }
 
     // ======================== Exported members ================================
-    function initEditor(editorId, caretPositionId) {
-        caretPositionElement = document.getElementById(caretPositionId);
-        editorElement = document.getElementById(editorId);
+    function initEditor(editorContainerId) {
+        var editorContainer = document.getElementById(editorContainerId);
+        // Create toolbar div
+        var toolBarDiv = el('div');
+
+        // cleanBtn: <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser"></i></button>
+        var cleanBtn = el('button', { type: 'button' }, [
+            el('i', { class: 'fa fa-eraser' })
+        ]);
+        cleanBtn.addEventListener('click', s4yEditor.clean);
+        // h1: <button type="button" id="h1"><strong>H1</strong></button>
+        var h1Btn = el('button', { type: 'button' }, [el('strong', 'H1')]);
+        h1Btn.addEventListener('click', function () {
+            var result = executeCommand('formatblock', 'h1');
+            if (!result) {
+                result = executeCommand('formatblock', '<H1>');
+            }
+        });
+        // h2: <button type="button" id="h2"><strong>H2</strong></button>
+        var h2Btn = el('button', { type: 'button' }, [el('strong', 'H2')]);
+        h2Btn.addEventListener('click', function () {
+            var result = executeCommand('formatblock', 'h2');
+            if (!result) {
+                result = executeCommand('formatblock', '<H2>');
+            }
+        });
+        // p: <button type="button" id="p"><i class="fa fa-paragraph"></i></button>
+        var pBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-paragraph' })]);
+        pBtn.addEventListener('click', function () {
+            var result = executeCommand('formatblock', 'p');
+            if (!result) {
+                result = executeCommand('formatblock', '<P>');
+            }
+        });
+        // bold: <button type="button" onclick="s4yEditor.executeCommand('bold');"><i class="fa fa-bold"></i></button>
+        var boldBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-bold' })]);
+        boldBtn.addEventListener('click', function () {
+            executeCommand('bold');
+        });
+        // italic: <button type="button" onclick="s4yEditor.executeCommand('italic');"><i class="fa fa-italic"></i></button>
+        var italicBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-italic' })]);
+        italicBtn.addEventListener('click', function () {
+            executeCommand('italic');
+        });
+        // underline: <button type="button" onclick="s4yEditor.executeCommand('underline');"><i class="fa fa-underline"></i></button>
+        var underlineBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-underline' })]);
+        underlineBtn.addEventListener('click', function () {
+            executeCommand('underline');
+        });
+        // ol: <button type="button" id="ol"><i class="fa fa-list-ol"></i></button>
+        var olBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-list-ol' })]);
+        olBtn.addEventListener('click', function () {
+            var result = executeCommand('insertOrderedList');
+            if (!result) {
+                result = executeCommand('InsertOrderedList');
+            }
+        });
+        // ul: <button type="button" id="ul"><i class="fa fa-list"></i></button>
+        var ulBtn = el('button', { type: 'button' }, [el('i', { class: 'fa fa-list' })]);
+        ulBtn.addEventListener('click', function () {
+            var result = executeCommand('insertUnorderedList');
+            if (!result) {
+                result = executeCommand('InsertUnorderedList');
+            }
+        });
+
+        /* Mode:
+        <div id="editMode">
+                    <input type="checkbox" name="switchMode" id="switchBox"
+                        onchange="s4yEditor.setMode(this.checked);" />
+                    <label for="switchBox">Show HTML</label>
+                </div>
+        */
+        var editModeDiv = el('div', { id: 'editMode' }, [
+            el('input', { type: 'checkbox', name: 'switchMode', id: 'switchBox', onchange: 'setMode(this.checked);' }),
+            el('label', { for: 'switchBox' }, 'Show HTML')
+        ]);
+        // caret position: <small><i>Position: <span id="caret">0/0</span></i></small>
+        var caretSmall = el('small', el('i', 'Position: ', el('span', { id: 'caret' }, '0/0')));
+        // append buttons to toolbar
+        toolBarDiv.appendChild(cleanBtn);
+        toolBarDiv.appendChild(h1Btn);
+        toolBarDiv.appendChild(h2Btn);
+        toolBarDiv.appendChild(pBtn);
+        toolBarDiv.appendChild(boldBtn);
+        toolBarDiv.appendChild(italicBtn);
+        toolBarDiv.appendChild(underlineBtn);
+        toolBarDiv.appendChild(olBtn);
+        toolBarDiv.appendChild(ulBtn);
+        toolBarDiv.appendChild(editModeDiv);
+        toolBarDiv.appendChild(caretSmall);
+        // Complete construct toolbar div
+
+        // Construct contenteditable div: <div id="textBox" class="text-box" contenteditable="true"></div>
+        var textBoxDiv = el('div', {id: 'textBox', class: 'text-box', contenteditable: 'true'});
+
+        editorContainer.appendChild(toolBarDiv);
+        editorContainer.appendChild(textBoxDiv);
+
+        caretPositionElement = caretSmall.children[0].children[0]; // Get <span id="caret">0/0</span>
+        switchModeElement = editModeDiv.children[0];
+        editorElement = textBoxDiv;
+
         editorElement.addEventListener('keydown', showCaretPosition);
         editorElement.addEventListener('keyup', showCaretPosition);
         editorElement.addEventListener('mousedown', showCaretPosition);
         editorElement.addEventListener('mouseup', showCaretPosition);
 
         document.execCommand("defaultParagraphSeparator", false, "p");
-        if (document.compForm.switchMode.checked) { setMode(true); }
+        if (switchModeElement.checked) { setMode(true); }
     }
 
     function executeCommand(cmd, value) {
-        if (validateMode()) { 
-            var result = document.execCommand(cmd, false, value); 
+        if (validateMode()) {
+            var result = document.execCommand(cmd, false, value);
             editorElement.focus();
             return result;
         }
@@ -111,7 +216,7 @@ var s4yEditor = (function () {
 
     // Check the editor in editor or raw mode
     function validateMode() {
-        if (!document.compForm.switchMode.checked) { return true; }
+        if (!switchModeElement.checked) { return true; }
         alert("Uncheck \"Show HTML\".");
         editorElement.focus();
         return false;
