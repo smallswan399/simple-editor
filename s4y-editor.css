@@ -5,12 +5,20 @@
 .sy4-editor-toolbar {
   border-bottom: 1px #000000 solid;
 }
+.sy4-editor-toolbar button {
+  cursor: pointer;
+}
 
 .sy4-editor-textbox {
   height: 200px;
   padding: 12px;
   overflow: scroll;
   outline: none;
+}
+.sy4-editor-textbox ul,
+.sy4-editor-textbox ol {
+  margin: 16px 0;
+  padding-left: 40px;
 }
 .sy4-editor-textbox .s4y-editor-raw {
   padding: 0;
