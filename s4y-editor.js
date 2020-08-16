@@ -68,7 +68,7 @@ var s4yEditor = (function () {
         return node;
     }
 
-    // Show current caret position
+    // Show current caret position + Update bold, italic, underline buttons active status
     function showCaretPosition() {
         if (switchModeElement.checked === true) {
             return;
@@ -209,13 +209,13 @@ var s4yEditor = (function () {
         toolBarDiv.appendChild(ulBtn);
         toolBarDiv.appendChild(editModeDiv);
         toolBarDiv.appendChild(caretSmall);
-        // Complete construct toolbar div
+        // Completed construct toolbar div
 
         // Construct contenteditable div: <div class="s4y-editor-textbox" contenteditable="true"></div>
-        var textBoxDiv = el('div', { class: 's4y-editor-textbox', contenteditable: 'true' });
+        editorElement = el('div', { class: 's4y-editor-textbox', contenteditable: 'true' });
 
         editorContainer.appendChild(toolBarDiv);
-        editorContainer.appendChild(textBoxDiv);
+        editorContainer.appendChild(editorElement);
 
         caretPositionElement = caretSmall.children[0].children[0]; // Get <span>0/0</span>
         switchModeElement = editModeDiv.children[0];
@@ -223,7 +223,6 @@ var s4yEditor = (function () {
             setMode(e.target.checked);
         });
 
-        editorElement = textBoxDiv;
         editorElement.addEventListener('keydown', showCaretPosition);
         editorElement.addEventListener('keyup', showCaretPosition);
         editorElement.addEventListener('mousedown', showCaretPosition);
