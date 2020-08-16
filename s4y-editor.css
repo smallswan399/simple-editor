@@ -28,6 +28,8 @@
   min-width: 498px;
   min-height: 200px;
   outline: none;
+  background-color: white;
+  border: none;
 }
 
 .s4y-editor-mode {

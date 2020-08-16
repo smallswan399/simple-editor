@@ -18,6 +18,11 @@ var s4yEditor = (function () {
     var caretPositionElement;
     var switchModeElement;
 
+    var boldBtn, italicBtn, underlineBtn;
+
+    var formatBold = false;
+    var formatItalic = false;
+    var formatUnderline = false;
     // ======================== Private members =================================
     // Tydy the html text
     function tidy(htmlText) {
@@ -68,6 +73,26 @@ var s4yEditor = (function () {
         if (switchModeElement.checked === true) {
             return;
         }
+
+        formatBold = document.queryCommandState('bold');
+        formatItalic = document.queryCommandState('italic');
+        formatUnderline = document.queryCommandState('underline');
+        if (formatBold === true) {
+            boldBtn.classList.add('active');
+        } else {
+            boldBtn.classList.remove('active');
+        }
+        if (formatItalic === true) {
+            italicBtn.classList.add('active');
+        } else {
+            italicBtn.classList.remove('active');
+        }
+        if (formatUnderline === true) {
+            underlineBtn.classList.add('active');
+        } else {
+            underlineBtn.classList.remove('active');
+        }
+
         var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
         var w3 = (typeof window.getSelection != "undefined") && true;
         var caretOffset = 0;
@@ -97,7 +122,7 @@ var s4yEditor = (function () {
     function initEditor(editorContainerId) {
         var editorContainer = document.getElementById(editorContainerId);
         // Create toolbar div
-        var toolBarDiv = el('div', {class: 's4y-editor-toolbar'});
+        var toolBarDiv = el('div', { class: 's4y-editor-toolbar' });
 
         // cleanBtn: <button type="button" onclick="s4yEditor.clean()"><i class="fa fa-eraser"></i></button>
         var cleanBtn = el('button', { type: 'button', class: 'btn btn-default' }, [
@@ -129,17 +154,17 @@ var s4yEditor = (function () {
             }
         });
         // bold: <button type="button" onclick="s4yEditor.executeCommand('bold');"><i class="fa fa-bold"></i></button>
-        var boldBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-bold' })]);
+        boldBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-bold' })]);
         boldBtn.addEventListener('click', function () {
             executeCommand('bold');
         });
         // italic: <button type="button" onclick="s4yEditor.executeCommand('italic');"><i class="fa fa-italic"></i></button>
-        var italicBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-italic' })]);
+        italicBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-italic' })]);
         italicBtn.addEventListener('click', function () {
             executeCommand('italic');
         });
         // underline: <button type="button" onclick="s4yEditor.executeCommand('underline');"><i class="fa fa-underline"></i></button>
-        var underlineBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-underline' })]);
+        underlineBtn = el('button', { type: 'button', class: 'btn btn-default' }, [el('i', { class: 'fa fa-underline' })]);
         underlineBtn.addEventListener('click', function () {
             executeCommand('underline');
         });
@@ -187,7 +212,7 @@ var s4yEditor = (function () {
         // Complete construct toolbar div
 
         // Construct contenteditable div: <div class="s4y-editor-textbox" contenteditable="true"></div>
-        var textBoxDiv = el('div', {class: 's4y-editor-textbox', contenteditable: 'true'});
+        var textBoxDiv = el('div', { class: 's4y-editor-textbox', contenteditable: 'true' });
 
         editorContainer.appendChild(toolBarDiv);
         editorContainer.appendChild(textBoxDiv);
