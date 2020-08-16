@@ -1,0 +1,36 @@
+#editor {
+    border: 1px #000000 solid;
+}
+
+#editor .sy4-editor-toolbar {
+    border-bottom: 1px #000000 solid;
+}
+
+#textBox {
+    /* width: 540px; */
+    height: 200px;
+    /* border: 1px #000000 solid; */
+    padding: 12px;
+    overflow: scroll;
+    outline: none;
+}
+
+#textBox #sourceText {
+    padding: 0;
+    margin: 0;
+    min-width: 498px;
+    min-height: 200px;
+    outline: none;
+}
+
+/* #textBox p:first-child {
+            margin-top: 0;
+        } */
+
+#editMode {
+    display: inline-block;
+}
+
+#editMode label {
+    cursor: pointer;
+}
