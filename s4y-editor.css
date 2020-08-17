@@ -8,7 +8,11 @@
 }
 .s4y-editor-toolbar button {
   cursor: pointer;
-  margin-right: 2px;
+  margin-right: 3px;
+}
+.s4y-editor-toolbar .s4y-editor-mode {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .s4y-editor-textbox {
