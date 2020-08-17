@@ -128,7 +128,9 @@ var s4yEditor = (function () {
         var cleanBtn = el('button', { type: 'button', class: 'btn btn-default' }, [
             el('i', { class: 'fa fa-eraser' })
         ]);
-        cleanBtn.addEventListener('click', s4yEditor.clean);
+        cleanBtn.addEventListener('click', function () {
+            clean();
+        });
         // h1: <button type="button" id="h1"><strong>H1</strong></button>
         var h1Btn = el('button', { type: 'button', class: 'btn btn-default' }, [el('strong', 'H1')]);
         h1Btn.addEventListener('click', function () {
@@ -283,12 +285,12 @@ var s4yEditor = (function () {
         }
     }
 
+    function init2(editorContainerId) {
+        
+    }
     return {
         initEditor: initEditor,
-        executeCommand: executeCommand,
         validateMode: validateMode,
-        setMode: setMode,
-        clean: clean,
         getInnerHtml: getInnerHtml
     };
 })();
