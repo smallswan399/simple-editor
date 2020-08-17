@@ -190,13 +190,14 @@ var s4yEditor = (function () {
 
             /* Mode:
             <div class="s4y-editor-mode">
-                        <input type="checkbox" id="s4y-editor-switch-box" />
-                        <label for="s4y-editor-switch-box">Show HTML</label>
-                    </div>
+                    <label><input type="checkbox" /> Show HTML</label>
+                </div>
             */
             var editModeDiv = el('div', { class: 's4y-editor-mode' }, [
-                el('input', { type: 'checkbox', id: 's4y-editor-switch-box' }),
-                el('label', { for: 's4y-editor-switch-box' }, 'Show HTML')
+                el('label', [
+                    el('input', { type: 'checkbox' }),
+                    ' Show HTML'
+                ])
             ]);
             // caret position: <small><i>Position: <span>0/0</span></i></small>
             var caretSmall = el('small', el('i', 'Position: ', el('span', '0/0')));
