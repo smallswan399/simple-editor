@@ -31,6 +31,7 @@
             <div class="s4y-editor-textbox" contenteditable="true"></div>
         </div> -->
         <div id="editor" class="s4y-editor-container"></div>
+        <div id="editor1" class="s4y-editor-container"></div>
         <input type="submit" value="Send" />
     </form>
 
@@ -38,10 +39,13 @@
     <script src="s4y-editor.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function (e) {
-            s4yEditor.initEditor('editor');
+            var editor = s4yEditor.createInstance();
+            editor.initEditor('editor');
+            editor.setInnerHtml('<a href="http://google.com.vn">google.com</a>');
+            var editor1 = s4yEditor.createInstance().initEditor('editor1');
             document.querySelector('#form').addEventListener('submit', function (e) {
-                if (s4yEditor.validateMode()) {
-                    this.myDoc.value = s4yEditor.getInnerHtml();
+                if (editor.validateMode()) {
+                    this.myDoc.value = editor.getInnerHtml();
                 } else {
                     e.preventDefault();
                 }
