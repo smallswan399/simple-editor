@@ -1,0 +1,55 @@
+.s4y-editor-container {
+  border: 1px #cccccc solid;
+  border-radius: 5px;
+}
+
+.s4y-editor-toolbar {
+  border-bottom: 1px #cccccc solid;
+  padding: 4px;
+}
+.s4y-editor-toolbar button {
+  cursor: pointer;
+  margin-right: 3px;
+}
+.s4y-editor-toolbar .s4y-editor-mode {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.s4y-editor-toolbar .s4y-editor-mode label {
+  margin-bottom: 0;
+}
+
+.s4y-editor-textbox {
+  height: 180px;
+  padding: 5px;
+  overflow-y: auto;
+  outline: none;
+}
+.s4y-editor-textbox .s4y-editor-raw {
+  padding: 0;
+  margin: 0;
+  min-width: 498px;
+  min-height: 200px;
+  outline: none;
+  background-color: white;
+  border: none;
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+}
+
+.s4y-editor-mode {
+  display: inline-block;
+}
+.s4y-editor-mode label {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=s4y-editor.css.map */

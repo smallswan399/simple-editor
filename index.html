@@ -3,196 +3,21 @@
 
 <head>
     <title>Rich Text Editor</title>
-    <script src="tidy.js"></script>
-    <script type="text/javascript">
-        var oDoc, sDefTxt = '<p><br></p>';
-
-        function initDoc() {
-            oDoc = document.getElementById("textBox");
-            oDoc.innerHTML = sDefTxt;
-            oDoc.addEventListener('keydown', function (e) {
-                if (!oDoc.innerHTML.trim()) {
-                    oDoc.innerHTML = sDefTxt;
-                }
-            });
-            oDoc.addEventListener('keyup', function (e) {
-                if (!oDoc.innerHTML.trim()) {
-                    oDoc.innerHTML = sDefTxt;
-                }
-            });
-            document.execCommand("defaultParagraphSeparator", false, "p");
-            if (document.compForm.switchMode.checked) { setDocMode(true); }
-        }
-
-        function formatDoc(sCmd, sValue) {
-            if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
-        }
-
-        function validateMode() {
-            if (!document.compForm.switchMode.checked) { return true; }
-            alert("Uncheck \"Show HTML\".");
-            oDoc.focus();
-            return false;
-        }
-
-        function setDocMode(bToSource) {
-            var oContent;
-            if (bToSource) {
-                var rawText = formatText(tidy(oDoc.innerHTML.replace(/\n|\t/g, '').trim()));
-                oContent = document.createTextNode(rawText.trim());
-                oDoc.innerHTML = "";
-                var oPre = document.createElement("pre");
-                oDoc.contentEditable = false;
-                oPre.id = "sourceText";
-                oPre.contentEditable = true;
-                oPre.appendChild(oContent);
-                oDoc.appendChild(oPre);
-            } else {
-                oContent = document.createRange();
-                oContent.selectNodeContents(oDoc.firstChild);
-                if (!oContent.toString().trim()) { // Switch to editor mode, check to append the first p if need
-                    oDoc.innerHTML = sDefTxt;
-                } else { // Reserve editor content from the pre node
-                    oDoc.innerHTML = oContent.toString();
-                }
-                // Re make doc element be contentEditable
-                oDoc.contentEditable = true;
-            }
-            oDoc.focus();
-        }
-
-        function printDoc() {
-            if (!validateMode()) { return; }
-            var oPrntWin = window.open("", "_blank", "width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
-            oPrntWin.document.open();
-            oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><\/head><body onload=\"print();\">" + oDoc.innerHTML + "<\/body><\/html>");
-            oPrntWin.document.close();
-        }
-    </script>
-    <style type="text/css">
-        .intLink {
-            cursor: pointer;
-        }
-
-        img.intLink {
-            border: 0;
-        }
-
-        #toolBar1 select {
-            font-size: 10px;
-        }
-
-        #textBox {
-            width: 540px;
-            height: 200px;
-            border: 1px #000000 solid;
-            padding: 12px;
-            overflow: scroll;
-        }
-
-        #textBox #sourceText {
-            padding: 0;
-            margin: 0;
-            min-width: 498px;
-            min-height: 200px;
-        }
-
-        #textBox p:first-child {
-            margin-top: 0;
-        }
-        #editMode {
-            display: inline-block;
-        }
-        #editMode label {
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="s4y-editor.css">
 </head>
 
-<body onload="initDoc();">
-    <form name="compForm" method="post" action="sample.php"
-        onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
-        <input type="hidden" name="myDoc">
-        <div id="toolBar1">
-            <select onchange="formatDoc('formatblock',this[this.selectedIndex].value);this.selectedIndex=0;">
-                <option selected>- formatting -</option>
-                <option value="h1">Title 1 &lt;h1&gt;</option>
-                <option value="h2">Title 2 &lt;h2&gt;</option>
-                <option value="h3">Title 3 &lt;h3&gt;</option>
-                <option value="h4">Title 4 &lt;h4&gt;</option>
-                <option value="h5">Title 5 &lt;h5&gt;</option>
-                <option value="h6">Subtitle &lt;h6&gt;</option>
-                <option value="p">Paragraph &lt;p&gt;</option>
-                <option value="pre">Preformatted &lt;pre&gt;</option>
-            </select>
-            <select onchange="formatDoc('fontname',this[this.selectedIndex].value);this.selectedIndex=0;">
-                <option class="heading" selected>- font -</option>
-                <option>Arial</option>
-                <option>Arial Black</option>
-                <option>Courier New</option>
-                <option>Times New Roman</option>
-            </select>
-            <select onchange="formatDoc('fontsize',this[this.selectedIndex].value);this.selectedIndex=0;">
-                <option class="heading" selected>- size -</option>
-                <option value="1">Very small</option>
-                <option value="2">A bit small</option>
-                <option value="3">Normal</option>
-                <option value="4">Medium-large</option>
-                <option value="5">Big</option>
-                <option value="6">Very big</option>
-                <option value="7">Maximum</option>
-            </select>
-            <select onchange="formatDoc('forecolor',this[this.selectedIndex].value);this.selectedIndex=0;">
-                <option class="heading" selected>- color -</option>
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-                <option value="green">Green</option>
-                <option value="black">Black</option>
-            </select>
-            <select onchange="formatDoc('backcolor',this[this.selectedIndex].value);this.selectedIndex=0;">
-                <option class="heading" selected>- background -</option>
-                <option value="red">Red</option>
-                <option value="green">Green</option>
-                <option value="black">Black</option>
-            </select>
-        </div>
-        <div id="toolBar2">
-            <button type="button" onclick="if(validateMode()&&confirm('Are you sure?')){oDoc.innerHTML=sDefTxt};"><i
-                    class="fa fa-eraser" aria-hidden="true"></i></button>
-            <button type="button" onclick="printDoc();"><i class="fa fa-print" aria-hidden="true"></i></button>
-            <button type="button" onclick="formatDoc('undo');"><i class="fa fa-undo"></i></button>
-            <button type="button" onclick="formatDoc('redo');"><i class="fa fa-repeat"></i></button>
-            <button type="button" onclick="formatDoc('removeFormat')"><i class="fa fa-times"></i></button>
-            <button type="button" onclick="formatDoc('bold');"><i class="fa fa-bold"></i></button>
-            <button type="button" onclick="formatDoc('italic');"><i class="fa fa-italic"></i></button>
-            <button type="button" onclick="formatDoc('underline');"><i class="fa fa-underline"></i></button>
-            <button type="button" onclick="formatDoc('justifyleft');"><i class="fa fa-align-left"></i></button>
-            <button type="button" onclick="formatDoc('justifycenter');"><i class="fa fa-align-center"></i></button>
-            <button type="button" onclick="formatDoc('justifyright');"><i class="fa fa-align-right"></i></button>
-            <button type="button" onclick="formatDoc('insertorderedlist');"><i class="fa fa-list-ol"></i></button>
-            <button type="button" onclick="formatDoc('insertunorderedlist');"><i class="fa fa-list"></i></button>
-            <button type="button" onclick="formatDoc('formatblock','blockquote');"><i
-                    class="fa fa-quote-right"></i></button>
-            <button type="button" onclick="formatDoc('outdent');"><i class="fa fa-outdent"></i></button>
-            <button type="button" onclick="formatDoc('indent');"><i class="fa fa-indent"></i></button>
-            <button type="button"
-                onclick="var sLnk=prompt('Write the URL here','http:\/\/');if(sLnk&&sLnk!=''&&sLnk!='http://'){formatDoc('createlink',sLnk);}"><i
-                    class="fa fa-link"></i></button>
-            <button type="button" onclick="formatDoc('cut');"><i class="fa fa-scissors"></i></button>
-            <button type="button" onclick="formatDoc('copy');"><i class="fa fa-clone"></i></button>
-            <button type="button" onclick="formatDoc('paste');"><i class="fa fa-clipboard"></i></button>
-            <div id="editMode">
-                <input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);" />
-                <label for="switchBox">Show HTML</label>
-            </div>
-        </div>
-        <div id="textBox" contenteditable="true">
-        </div>
-        <p><input type="submit" value="Send" /></p>
-    </form>
+<body>
+    <div id="editor" class="s4y-editor-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redom/3.27.1/redom.min.js"></script>
+    <script src="s4y-editor.js"></script>
+    <script>
+        var editor = s4yEditor.Editor({
+
+        });
+        editor.initEditor('editor');
+    </script>
 </body>
 
 </html>
