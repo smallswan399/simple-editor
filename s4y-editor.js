@@ -361,7 +361,7 @@ var s4yEditor = (function () {
             editorContainer.appendChild(editorElement);
 
             caretPositionElement = caretSmall.children[0].children[0]; // Get <span>0/0</span>
-            switchModeElement = editModeDiv.children[0];
+            switchModeElement = editModeDiv.children[0].firstChild;
             switchModeElement.addEventListener('change', function (e) {
                 setMode(e.target.checked);
             });
@@ -390,7 +390,7 @@ var s4yEditor = (function () {
             if (!switchModeElement.checked) {
                 return true;
             }
-            alert("Uncheck \"Show HTML\".");
+            alert("You can't you the tools in the HTML mode. Uncheck \"Show HTML\" to enable it.");
             editorElement.focus();
             return false;
         }
